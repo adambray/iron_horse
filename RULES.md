@@ -1,6 +1,7 @@
 Game: Iron Horse
 
-==Elements==
+Elements
+========
 
 * 1 Game Board (consisting of cities connected by routes)
 * ? Worker pieces (? for each player)
