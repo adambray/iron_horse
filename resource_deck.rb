@@ -25,14 +25,15 @@ class ResourceDeck
   end
     
   
-  def return_card
+  def return_card(kind)
+    
   end
   
   private
   
   def reshuffle_deck
     @main_pile = @discard_pile.shuffle
-    @discard_pile.delete_all
+    @discard_pile = []
   end
 
 end
