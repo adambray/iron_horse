@@ -1,10 +1,9 @@
-class ResourceDeck
+class MainDeck
   
-  attr_reader :main_pile, :face_up_pile, :discard_pile
+  attr_reader :main_pile, :discard_pile
   
   def initialize(kind_and_number)
     @main_pile = []
-    @face_up_pile = []
     @discard_pile = []
 
     kind_and_number.each do |kind, number|
@@ -15,18 +14,14 @@ class ResourceDeck
     @main_pile.shuffle!
   end
 
-  def draw_from_main_pile
+  def draw!
     @drawn_card = @main_pile.delete_at(0)
-    reshuffle_deck if @main_pile.empty? 
-  end
-  
-  def draw_from_face_up
-    @face_up_pile.delete_at
+    reshuffle_deck if @main_pile.empty?
+    @drawn_card
   end
     
-  
   def return_card(kind)
-    
+    @discard_pile << kind
   end
   
   private
@@ -34,6 +29,26 @@ class ResourceDeck
   def reshuffle_deck
     @main_pile = @discard_pile.shuffle
     @discard_pile = []
+  end
+
+end
+
+
+
+class FaceUpDeck
+
+  attr_reader :cards
+
+  def initialize(size, deck)
+    @cards = []
+    size.times do
+      @cards << deck.draw!
+    end
+  end
+  
+  def draw!(kind, deck)
+    @cards[@cards.index(kind)] = deck.draw!
+    return kind
   end
 
 end
