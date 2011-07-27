@@ -4,8 +4,8 @@
 
 * 1 game board (consisting of cities connected by routes)
 * 50 train cards per player
-* 30 route markers per player
-* 6 dice
+* route markers for each player
+* 5 dice
 
 ##Objective
 
