@@ -1,47 +1,46 @@
 module IronHorse
   class Board
-
+    
+    attr_reader :cities, :route_owners
     def initialize
-      @route_cost =     [ [ nil,  3,    nil,  nil,  nil,  3,    5   ],
-                          [ 3,    nil,  2,    nil,  nil,  nil,  1   ],
-                          [ nil,  2,    nil,  3,    nil,  nil,  5   ],
-                          [ nil,  nil,  3,    nil,  1,    nil,  2   ],
-                          [ nil,  nil,  nil,  1,    nil,  2,    2   ],
-                          [ 3,    nil,  nil,  nil,  2,    nil,  5   ],
-                          [ 5,    1,    5,    2,    2,    5,    nil ] ]
+      @route_cost =     [ [ nil,  10,   nil,  nil,  nil,  20,   30 ],
+                          [ 30,    nil,  20,    nil,  nil,  nil,  10   ],
+                          [ nil,  20,    nil,  30,    nil,  nil,  25   ],
+                          [ nil,  nil,  30,    nil,  10,    nil,  20   ],
+                          [ nil,  nil,  nil,  10,    nil,  20,    20   ],
+                          [ 30,    nil,  nil,  nil,  20,    nil,  25   ],
+                          [ 25,    10,    25,    20,    20,    25,    nil ] ]
       
-      @route_owners =   [ [ nil,  nil,  nil,  nil,  nil,  nil,  nil ],
-                          [ nil,  nil,  nil,  nil,  nil,  nil,  nil ],
-                          [ nil,  nil,  nil,  nil,  nil,  nil,  nil ],
-                          [ nil,  nil,  nil,  nil,  nil,  nil,  nil ],
-                          [ nil,  nil,  nil,  nil,  nil,  nil,  nil ],
-                          [ nil,  nil,  nil,  nil,  nil,  nil,  nil ],
-                          [ nil,  nil,  nil,  nil,  nil,  nil,  nil ] ]
+       @route_owners = Array.new(7) { Array.new(7, nil)}
+       @cities = Array.new(@route_owners.size) {|a| a + 1}
     end
-    
-    def cities
-      (0..@route_owners.size)
-    end
-    
+        
     def route_owner(from, to)
-      return @routes[from][to]
+      @route_owners[from - 1][to - 1]
     end
     
     def route_cost(from, to)
-      return @route_cost[from][to]
+      cost = @route_cost[from - 1][to - 1]
+      # If route doesn't exist, it's the same as infinite cost
+      cost ? cost : (1.0/0)
     end
     
     def assign_route(player, from, to)
-      @route_owners[from][to] = player
-      @route_owners[to][from] = player
+      @route_owners[from - 1][to - 1] = player
+      @route_owners[to - 1][from - 1] = player
     end
     
-    def controller_of(city)
+    def owner_of(city)
+
       route_count = {}
-      @route_owners[city].each do |other_city|
-        owner = @route_owners[city][other_city]
+      @cities.each do |other_city|
+        owner = @route_owners[city - 1][other_city - 1]
         unless owner == nil
-          route_count[owner] += 1
+          if route_count[owner]
+            route_count[owner] += 1
+          else
+            route_count[owner] = 1
+          end
         end 
       end
       
@@ -55,7 +54,7 @@ module IronHorse
         end
       end
       
-      return controller    
+      controller
     end
       
   end
