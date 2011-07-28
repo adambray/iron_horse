@@ -56,6 +56,9 @@ module IronHorse
       
       controller
     end
-      
+    
+    def routes_owned_for_city(player, city)
+      @cities.select{|other| @route_owners[city-1][other-1] == player}.count
+    end  
   end
 end
